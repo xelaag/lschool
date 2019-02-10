@@ -75,11 +75,13 @@ function returnCounter(number) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
-    var i,
-        arr = [];
+    var i;
+    var arr = [];
+
     for (i = 0; i < arguments.length; i++) {
         arr.push(arguments[i]);
     }
+    
     return arr;
 }
 
