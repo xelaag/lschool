@@ -60,7 +60,7 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number) {
-    return function F() {
+    return function f() {
         return ++number;
     }
 }
@@ -81,7 +81,7 @@ function returnArgumentsArray() {
     for (i = 0; i < arguments.length; i++) {
         arr.push(arguments[i]);
     }
-    
+
     return arr;
 }
 
