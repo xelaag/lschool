@@ -52,6 +52,7 @@ function reduce(array, fn, initial) {
     for (i; i < array.length; i++) {
         previousValue = fn(previousValue, array [i], i, array);
     }
+
     return previousValue;
 }
 
@@ -65,9 +66,12 @@ function reduce(array, fn, initial) {
 function upperProps(obj) {
     var arr = [];
 
-    for (var key in obj){
-        arr.push(key.toUpperCase());
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            arr.push(key.toUpperCase());
+        }
     }
+
     return arr;
 }
 
