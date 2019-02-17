@@ -41,15 +41,22 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
-    if (!initial){
-        initial = array
+    var previousValue = array[0],
+        i = 1;
+
+    if (initial !== undefined) {
+        previousValue = initial;
+        i = 0;
     }
 
+    for (i; i < array.length; i++) {
+        previousValue = fn(previousValue, array [i], i, array);
+    }
+    return previousValue;
 }
 
 /*
  Задание 4:
-
  Функция должна перебрать все свойства объекта, преобразовать их имена в верхний регистр и вернуть в виде массива
 
  Пример:
