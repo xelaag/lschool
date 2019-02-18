@@ -18,16 +18,18 @@
  */
 function isAllTrue(array, fn) {
     if (array.length === 0) {
-        throw new Error("empty array");
+        throw new Error('empty array');
     }
     var isArr = array instanceof Array;
+
     if (!isArr) {
-        throw new Error("empty array");
+        throw new Error('empty array');
     }
-    if (typeof fn !== "function") {
-        throw new Error("fn is not a function");
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
     }
     let result = true;
+
     for (let i = 0; i < array.length; i++) {
         if (fn(array[i]) != true) {
             result = false;
@@ -37,11 +39,11 @@ function isAllTrue(array, fn) {
     return result;
 }
 
-try {
-    isAllTrue([1, 2, 3], n => n < 10);
-} catch (e) {
-    console.error(e.message);
-}
+// try {
+//     isAllTrue([1, 2, 3], n => n < 10);
+// } catch (e) {
+//     console.error(e.message);
+// }
 
 /*
  Задание 2:
@@ -61,16 +63,18 @@ try {
  */
 function isSomeTrue(array, fn) {
     if (array.length === 0) {
-        throw new Error("empty array");
+        throw new Error('empty array');
     }
     var isArr = array instanceof Array;
+
     if (!isArr) {
-        throw new Error("empty array");
+        throw new Error('empty array');
     }
-    if (typeof fn !== "function") {
-        throw new Error("fn is not a function");
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
     }
     let result = false;
+
     for (let i = 0; i < array.length; i++) {
         if (fn(array[i]) == true) {
             result = true;
@@ -81,11 +85,11 @@ function isSomeTrue(array, fn) {
     return result;
 }
 
-try {
-    isSomeTrue([13, 12, 3, 20], n => n < 10);
-} catch (e) {
-    console.error(e.message);
-}
+// try {
+//     isSomeTrue([13, 12, 3, 20], n => n < 10);
+// } catch (e) {
+//     console.error(e.message);
+// }
 
 /*
  Задание 3:
@@ -99,7 +103,23 @@ try {
    - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn) {
+    var arr = [];
+
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
+    for (let i = 1; i < arguments.length; i++) {
+        try {
+            fn(arguments[i]);
+        } catch (e) {
+            arr.push(arguments[i]);
+        }
+    }
+
+    return arr;
 }
+
+returnBadArguments(n => n < 10, 1, 12, 3);
 
 /*
  Задание 4:
