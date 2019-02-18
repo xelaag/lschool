@@ -119,7 +119,7 @@ function returnBadArguments(fn) {
     return arr;
 }
 
-returnBadArguments(n => n < 10, 1, 12, 3);
+//returnBadArguments(n => n < 10, 1, 12, 3);
 
 /*
  Задание 4:
@@ -138,7 +138,23 @@ returnBadArguments(n => n < 10, 1, 12, 3);
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator() {
+function calculator(num = 0) {
+    if (typeof num !== 'number') {
+        throw new Error('number is not a number');
+    }
+    var args = [];
+
+    for (let i = 0; i < arguments.length; i++) {
+        args[i] = arguments[i];
+    }
+
+    var obj
+    {
+        summ: function() {
+            args.reduce((pn,cn) => pn+cn, 0);
+        }
+
+    };
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
