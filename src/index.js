@@ -148,23 +148,27 @@ function calculator(num = 0) {
         args[i] = arguments[i];
     }
 
+    function checkZero(n) {
+        return n ===0;
+    }
+
     var obj =
         {
             sum: function () {
-                return args.reduce((pn, cn) => pn + cn);
+                return args.reduce((prevNumber, curNumber) => prevNumber + curNumber);
             },
             dif: function () {
-                return args.reduce((pn, cn) => pn - cn);
+                return args.reduce((prevNumber, curNumber) => prevNumber - curNumber);
             },
             div: function () {
-                if (args[i] == 0) {
+                if (args.some(checkZero)) {
                     throw new Error('division by 0');
                 }
 
-                return args.reduce((pn, cn) => pn / cn);
+                return args.reduce((prevNumber, curNumber) => prevNumber / curNumber);
             },
             mul: function () {
-                return args.reduce((pn, cn) => pn * cn);
+                return args.reduce((prevNumber, curNumber) => prevNumber * curNumber);
             }
 
         };
