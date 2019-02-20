@@ -142,36 +142,42 @@ function calculator(num = 0) {
     if (typeof num !== 'number') {
         throw new Error('number is not a number');
     }
-    var args = [];
+    var result = num,
+        obj =
+            {
+                sum: function () {
+                    for (let i = 0; i < arguments.length; i++) {
+                        result += arguments[i];
+                    }
 
-    for (let i = 0; i < arguments.length; i++) {
-        args[i] = arguments[i];
-    }
+                    return result;
+                },
 
-    function checkZero(n) {
-        return n ===0;
-    }
+                dif: function () {
+                    for (let i = 0; i < arguments.length; i++) {
+                        result -= arguments[i];
+                    }
 
-    var obj =
-        {
-            sum: function () {
-                return args.reduce((prevNumber, curNumber) => prevNumber + curNumber);
-            },
-            dif: function () {
-                return args.reduce((prevNumber, curNumber) => prevNumber - curNumber);
-            },
-            div: function () {
-                if (args.some(checkZero)) {
-                    throw new Error('division by 0');
-                }
+                    return result;
+                },
+                div: function () {
+                    for (let i = 0; i < arguments.length; i++) {
+                        if (arguments[i] === 0) {
+                            throw new Error('division by 0');
+                        }
+                        result /= arguments[i];
+                    }
 
-                return args.reduce((prevNumber, curNumber) => prevNumber / curNumber);
-            },
-            mul: function () {
-                return args.reduce((prevNumber, curNumber) => prevNumber * curNumber);
-            }
+                    return result;
+                },
+                mul: function () {
+                    for (let i = 0; i < arguments.length; i++) {
+                        result *= arguments[i];
+                    }
 
-        };
+                    return result;
+                },
+            };
 
     return obj;
 }
