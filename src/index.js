@@ -119,8 +119,6 @@ function returnBadArguments(fn) {
     return arr;
 }
 
-//returnBadArguments(n => n < 10, 1, 12, 3);
-
 /*
  Задание 4:
 
