@@ -148,13 +148,28 @@ function calculator(num = 0) {
         args[i] = arguments[i];
     }
 
-    var obj
-    {
-        summ: function() {
-            args.reduce((pn,cn) => pn+cn, 0);
-        }
+    var obj =
+        {
+            sum: function () {
+                return args.reduce((pn, cn) => pn + cn);
+            },
+            dif: function () {
+                return args.reduce((pn, cn) => pn - cn);
+            },
+            div: function () {
+                if (args[i] == 0) {
+                    throw new Error('division by 0');
+                }
 
-    };
+                return args.reduce((pn, cn) => pn / cn);
+            },
+            mul: function () {
+                return args.reduce((pn, cn) => pn * cn);
+            }
+
+        };
+
+    return obj;
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
