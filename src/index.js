@@ -12,7 +12,9 @@
  */
 function createDivWithText(text) {
     const element = document.createElement('div');
+
     element.textContent = text;
+
     return document.body.appendChild(element);
 }
 
@@ -25,6 +27,8 @@ function createDivWithText(text) {
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
 function prepend(what, where) {
+    where.prepend(what);
+
 }
 
 /*
@@ -89,6 +93,7 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+
 }
 
 /*
