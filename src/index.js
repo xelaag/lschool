@@ -28,7 +28,6 @@ function createDivWithText(text) {
  */
 function prepend(what, where) {
     where.prepend(what);
-
 }
 
 /*
@@ -51,6 +50,16 @@ function prepend(what, where) {
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+    var elements = [];
+
+    for (var i = 0; i < where.childNodes.length; i++) {
+
+        if (where.childNodes[i].tagName === 'P') {
+            elements.push(where.childNodes[i].previousElementSibling);
+        }
+    }
+
+    return elements;
 }
 
 /*
