@@ -33,7 +33,7 @@ function removeListener(eventName, target, fn) {
    skipDefault('click', document.querySelector('a')) // после вызова функции, клики на указанную ссылку не должны приводить к переходу на другую страницу
  */
 function skipDefault(eventName, target) {
-    target.addEventListener(eventName, function (event){
+    target.addEventListener(eventName, function (event) {
         event.preventDefault();
     });
 }
@@ -47,6 +47,7 @@ function skipDefault(eventName, target) {
    emulateClick(document.querySelector('a')) // для указанного элемента должно быть сэмулировано события click
  */
 function emulateClick(target) {
+    target.click();
 }
 
 /*
