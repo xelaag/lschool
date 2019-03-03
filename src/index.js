@@ -12,7 +12,7 @@ function delayPromise(seconds) {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve();
-        }, seconds*1000);
+        }, seconds * 1000);
     });
 }
 
@@ -30,11 +30,23 @@ function delayPromise(seconds) {
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
 function loadAndSortTowns() {
-    fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
-        .then(response => {
-            response = response.json();
 
-            return response.sort();
+    return fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+        .then(function (response) {
+
+            return response.json();
+        })
+        .then(function (result) {
+            return result.sort((a, b) => {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
+
+                return 0;
+            });
         })
 }
 
