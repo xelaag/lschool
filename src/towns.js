@@ -28,7 +28,18 @@
    const newDiv = document.createElement('div');
    homeworkContainer.appendChild(newDiv);
  */
+import { loadAndSortTowns } from './index';
+
 const homeworkContainer = document.querySelector('#homework-container');
+/* Блок с надписью "Загрузка" */
+const loadingBlock = homeworkContainer.querySelector('#loading-block');
+/* Блок с текстовым полем и результатом поиска */
+const filterBlock = homeworkContainer.querySelector('#filter-block');
+/* Текстовое поле для поиска по городам */
+const filterInput = homeworkContainer.querySelector('#filter-input');
+/* Блок с результатами поиска */
+const filterResult = homeworkContainer.querySelector('#filter-result');
+var inputWord = '';
 
 /*
  Функция должна вернуть Promise, который должен быть разрешен с массивом городов в качестве значения
@@ -37,20 +48,7 @@ const homeworkContainer = document.querySelector('#homework-container');
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
 function loadTowns() {
-    return fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
-        .then(response => response.json())
-        .then(result => {
-            return result.sort((a, b) => {
-                if (a.name > b.name) {
-                    return 1;
-                }
-                if (a.name < b.name) {
-                    return -1;
-                }
-
-                return 0;
-            })
-        })
+    loadAndSortTowns();
 }
 
 /*
@@ -65,20 +63,37 @@ function loadTowns() {
    isMatching('Moscow', 'Moscov') // false
  */
 function isMatching(full, chunk) {
+    full = full.toLowerCase();
+    if (full.indexOf(chunk) !== -1) {
+        return true;
+    }
 }
 
-/* Блок с надписью "Загрузка" */
-const loadingBlock = homeworkContainer.querySelector('#loading-block');
-/* Блок с текстовым полем и результатом поиска */
-const filterBlock = homeworkContainer.querySelector('#filter-block');
-/* Текстовое поле для поиска по городам */
-const filterInput = homeworkContainer.querySelector('#filter-input');
-/* Блок с результатами поиска */
-const filterResult = homeworkContainer.querySelector('#filter-result');
+loadTowns()
+    .then((resp) => {
+        loadingBlock.style.visibility = 'hidden';
+        filterBlock.style.visibility = 'visible';
 
-filterInput.addEventListener('keyup', function () {
-    // это обработчик нажатия кливиш в текстовом поле
-});
+        return resp;
+    })
+    .then(arrCities => {
+        filterInput.addEventListener('keyup', function (event) {
+            if (event.key !== 'ArrowLeft' || event.key !== 'ArrowRight' || event.key !== 'Backspace') {
+                inputWord += event.key;
+                filterResult.innerHTML = '';
+                for (let oneCity of arrCities) {
+                    let cityLower = oneCity.name;
+                    cityLower = cityLower.toLowerCase();
+                    if (isMatching(cityLower, inputWord)) {
+                        const newP = document.createElement('p');
+
+                        newP.innerHTML = oneCity.name;
+                        filterResult.appendChild(newP);
+                    }
+                }
+            }
+        });
+    });
 
 export {
     loadTowns,
