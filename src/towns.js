@@ -39,7 +39,8 @@ const filterBlock = homeworkContainer.querySelector('#filter-block');
 const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
-var inputWord = '';
+var inputWord = '',
+    symbol;
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -69,18 +70,20 @@ loadTowns()
     })
     .then(arrCities => {
         filterInput.addEventListener('keyup', function (event) {
+            symbol = '';
             if (event.key !== 'ArrowLeft' || event.key !== 'ArrowRight' || event.key !== 'Backspace') {
-                inputWord += event.key;
-                filterResult.innerHTML = '';
-                for (let oneCity of arrCities) {
-                    let cityLower = oneCity.name;
-                    cityLower = cityLower.toLowerCase();
-                    if (isMatching(cityLower, inputWord)) {
-                        const newP = document.createElement('p');
+                symbol= event.key;
+            }
+            inputWord += symbol;
+            filterResult.innerHTML = '';
+            for (let oneCity of arrCities) {
+                let cityLower = oneCity.name;
+                cityLower = cityLower.toLowerCase();
+                if (isMatching(cityLower, inputWord)) {
+                    const newP = document.createElement('p');
 
-                        newP.innerHTML = oneCity.name;
-                        filterResult.appendChild(newP);
-                    }
+                    newP.innerHTML = oneCity.name;
+                    filterResult.appendChild(newP);
                 }
             }
         });
