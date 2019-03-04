@@ -71,17 +71,19 @@ loadTowns()
     })
     .then(arrCities => {
         filterInput.addEventListener('keyup', function (event) {
-            inputWord += event.key;
-            filterResult.innerHTML = '';
-            for (let oneCity of arrCities) {
-                let cityLower = oneCity.name;
+            if (event.key !=='') {
+                inputWord += event.key;
+                filterResult.innerHTML = '';
+                for (let oneCity of arrCities) {
+                    let cityLower = oneCity.name;
 
-                cityLower = cityLower.toLowerCase();
-                if (isMatching(cityLower, inputWord)) {
-                    const newP = document.createElement('p');
+                    cityLower = cityLower.toLowerCase();
+                    if (isMatching(cityLower, inputWord)) {
+                        const newP = document.createElement('p');
 
-                    newP.innerHTML = oneCity.name;
-                    filterResult.appendChild(newP);
+                        newP.innerHTML = oneCity.name;
+                        filterResult.appendChild(newP);
+                    }
                 }
             }
         });
