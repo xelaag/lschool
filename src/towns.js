@@ -39,8 +39,7 @@ const filterBlock = homeworkContainer.querySelector('#filter-block');
 const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
-var inputWord = '',
-    symbol;
+var inputWord = '';
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -59,6 +58,8 @@ function isMatching(full, chunk) {
     if (full.indexOf(chunk) !== -1) {
         return true;
     }
+
+    return false
 }
 
 loadTowns()
@@ -70,14 +71,11 @@ loadTowns()
     })
     .then(arrCities => {
         filterInput.addEventListener('keyup', function (event) {
-            symbol = '';
-            if (event.key !== 'ArrowLeft' || event.key !== 'ArrowRight' || event.key !== 'Backspace') {
-                symbol= event.key;
-            }
-            inputWord += symbol;
+            inputWord += event.key;
             filterResult.innerHTML = '';
             for (let oneCity of arrCities) {
                 let cityLower = oneCity.name;
+
                 cityLower = cityLower.toLowerCase();
                 if (isMatching(cityLower, inputWord)) {
                     const newP = document.createElement('p');
