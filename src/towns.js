@@ -28,7 +28,7 @@
    const newDiv = document.createElement('div');
    homeworkContainer.appendChild(newDiv);
  */
-import { loadAndSortTowns } from './index';
+import { loadAndSortTowns as loadTowns } from './index';
 
 const homeworkContainer = document.querySelector('#homework-container');
 /* Блок с надписью "Загрузка" */
@@ -40,16 +40,6 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 var inputWord = '';
-
-/*
- Функция должна вернуть Promise, который должен быть разрешен с массивом городов в качестве значения
-
- Массив городов пожно получить отправив асинхронный запрос по адресу
- https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
- */
-function loadTowns() {
-    loadAndSortTowns();
-}
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -64,6 +54,7 @@ function loadTowns() {
  */
 function isMatching(full, chunk) {
     full = full.toLowerCase();
+    chunk = chunk.toLowerCase();
     if (full.indexOf(chunk) !== -1) {
         return true;
     }
