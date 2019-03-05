@@ -40,7 +40,6 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 let inputWord = '',
-    symbol,
     arrCities = [];
 
 /*
@@ -71,12 +70,13 @@ loadTowns()
 
         return arrCities = resp;
     });
+filterInput.value = '';
+filterInput.dispatchEvent(new KeyboardEvent('keyup'));
 
-filterInput.addEventListener('keyup', function (event) {
-    symbol = '';
-    if (event.key !== '') {
-        symbol = event.key;
-        inputWord += symbol;
+filterInput.addEventListener('keyup', function () {
+    filterResult.innerHTML = '';
+    if (filterInput.value !== '') {
+        inputWord = filterInput.value;
         filterResult.innerHTML = '';
         for (let oneCity of arrCities) {
             let cityLower = oneCity.name;
