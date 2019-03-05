@@ -65,8 +65,8 @@ function isMatching(full, chunk) {
 
 loadTowns()
     .then((resp) => {
-        loadingBlock.style.visibility = 'hidden';
-        filterBlock.style.visibility = 'visible';
+        loadingBlock.style.display = 'none';
+        filterBlock.style.display = 'block';
 
         return arrCities = resp;
     });
