@@ -39,7 +39,9 @@ const filterBlock = homeworkContainer.querySelector('#filter-block');
 const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
-var inputWord = '';
+let inputWord = '',
+    symbol,
+    arrCities = [];
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -64,30 +66,31 @@ function isMatching(full, chunk) {
 
 loadTowns()
     .then((resp) => {
-        loadingBlock.style.display = 'none';
-        filterBlock.style.display='block';
+        loadingBlock.style.visibility = 'hidden';
+        filterBlock.style.visibility = 'visible';
 
-        return resp;
-    })
-    .then(arrCities => {
-        filterInput.addEventListener('keyup', function (event) {
-            if (event.key !=='') {
-                inputWord += event.key;
-                filterResult.innerHTML = '';
-                for (let oneCity of arrCities) {
-                    let cityLower = oneCity.name;
-
-                    cityLower = cityLower.toLowerCase();
-                    if (isMatching(cityLower, inputWord)) {
-                        const newP = document.createElement('p');
-
-                        newP.innerHTML = oneCity.name;
-                        filterResult.appendChild(newP);
-                    }
-                }
-            }
-        });
+        return arrCities = resp;
     });
+
+filterInput.addEventListener('keyup', function (event) {
+    symbol = '';
+    if (event.key !== '') {
+        symbol = event.key;
+        inputWord += symbol;
+        filterResult.innerHTML = '';
+        for (let oneCity of arrCities) {
+            let cityLower = oneCity.name;
+
+            cityLower = cityLower.toLowerCase();
+            if (isMatching(cityLower, inputWord)) {
+                const newP = document.createElement('p');
+
+                newP.innerHTML = oneCity.name;
+                filterResult.appendChild(newP);
+            }
+        }
+    }
+});
 
 export {
     loadTowns,
