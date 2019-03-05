@@ -70,8 +70,6 @@ loadTowns()
 
         return arrCities = resp;
     });
-filterInput.value = '';
-filterInput.dispatchEvent(new KeyboardEvent('keyup'));
 
 filterInput.addEventListener('keyup', function () {
     filterResult.innerHTML = '';
