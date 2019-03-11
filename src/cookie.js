@@ -42,11 +42,25 @@ const addValueInput = homeworkContainer.querySelector('#add-value-input');
 const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
+let inputValue = '';
 
-filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+// здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+filterNameInput.addEventListener('keyup', function () {
+    listTable.innerHTML = '';
+    if (filterNameInput.value !== '') {
+        inputValue = filterNameInput.value;
+        for (let cookieOne of cookies) {
+            let cookieLow = cookieOne.name;
+
+            cookieLow = cookieLow.toLowerCase();
+            if (isMatching(cookieLow, inputValue)) {
+                ////создать элементы таблицы
+            }
+        }
+    }
 });
 
+// здесь можно обработать нажатие на кнопку "добавить cookie"
 addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
+
 });
