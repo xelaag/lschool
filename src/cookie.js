@@ -43,24 +43,123 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 let inputValue = '';
+var keyUp = false,
+    fragment = document.createDocumentFragment();
+
+var cookieObj = document.cookie.split('; ').reduce((prev, current) => {
+    const [name, value] = current.split('=');
+
+    prev[name] = value;
+
+    return prev;
+}, {});
 
 // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
 filterNameInput.addEventListener('keyup', function () {
-    listTable.innerHTML = '';
+    keyUp = true;
+    deleteNodes(listTable);
     if (filterNameInput.value !== '') {
         inputValue = filterNameInput.value;
-        for (let cookieOne of cookies) {
-            let cookieLow = cookieOne.name;
+        for (let cookieOne in cookieObj) {
+            let cookieLowName = cookieOne;
+            let cookieLowValue = cookieObj[cookieOne];
 
-            cookieLow = cookieLow.toLowerCase();
-            if (isMatching(cookieLow, inputValue)) {
-                ////создать элементы таблицы
+            cookieLowName = cookieLowName.toLowerCase();
+            cookieLowValue = cookieLowValue.toLowerCase();
+
+            if (isMatching(cookieLowName, inputValue)) {
+                createTR(cookieOne, cookieObj[cookieOne]);
+            } else {
+                if (isMatching(cookieLowValue, inputValue)) {
+                    createTR(cookieOne, cookieObj[cookieOne]);
+                }
             }
         }
+    } else {
+        for (var cookie in cookieObj) {
+            createTR(cookie, cookieObj[cookie]);
+        }
     }
+
 });
+
+// Если filterNameInput пуст и нет эвента keyUp на filterNameInput
+if (!keyUp) {
+    for (var cookie in cookieObj) {
+        createTR(cookie, cookieObj[cookie]);
+    }
+}
 
 // здесь можно обработать нажатие на кнопку "добавить cookie"
 addButton.addEventListener('click', () => {
+    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+    addNameInput.value = '';
+    addValueInput.value = '';
+    cookieObj = document.cookie.split('; ').reduce((prev, current) => {
+        const [name, value] = current.split('=');
 
+        prev[name] = value;
+
+        return prev;
+    }, {});
+    deleteNodes(listTable);
+    for (var cookie in cookieObj) {
+        createTR(cookie, cookieObj[cookie]);
+    }
 });
+
+function createTR(name, value) {
+    const tr = document.createElement('tr');
+    const tdName = document.createElement('td');
+    const tdValue = document.createElement('td');
+
+    tdName.innerText = name;
+    tdValue.innerText = value;
+    const deleteButton = document.createElement('button');
+
+    deleteButton.textContent = 'удалить';
+    deleteButton.addEventListener(('click'), () => {
+        listTable.removeChild(tr);
+        var cookieDate = new Date();
+
+        cookieDate.setTime(cookieDate.getTime() - 1);
+        document.cookie = name += '=; expires= ' + cookieDate.toUTCString();
+        cookieObj = document.cookie.split('; ').reduce((prev, current) => {
+            const [name, value] = current.split('=');
+
+            prev[name] = value;
+
+            return prev;
+        }, {});
+        deleteNodes(listTable);
+        for (var cookie in cookieObj) {
+            createTR(cookie, cookieObj[cookie]);
+        }
+    });
+
+    tr.appendChild(tdName);
+    tr.appendChild(tdValue);
+    tr.appendChild(deleteButton);
+
+    fragment.appendChild(tr);
+    listTable.appendChild(fragment);
+}
+
+function isMatching(full, chunk) {
+    full = full.toLowerCase();
+    chunk = chunk.toLowerCase();
+    if (full.indexOf(chunk) !== -1) {
+        return true;
+    }
+
+    return false
+}
+
+function deleteNodes(where) {
+    for (var i = 0; i < where.children.length; i++) {
+        where.removeChild(where.children[i]);
+        --i;
+    }
+
+    return where;
+}
