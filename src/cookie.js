@@ -42,17 +42,10 @@ const addValueInput = homeworkContainer.querySelector('#add-value-input');
 const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
-let inputValue = '';
 var keyUp = false,
     fragment = document.createDocumentFragment();
 
-var cookieObj = document.cookie.split('; ').reduce((prev, current) => {
-    const [name, value] = current.split('=');
-
-    prev[name] = value;
-
-    return prev;
-}, {});
+var cookieObj = getCookies();
 
 // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
 filterNameInput.addEventListener('keyup', function () {
@@ -63,9 +56,7 @@ filterNameInput.addEventListener('keyup', function () {
 
 // Если filterNameInput пуст и нет эвента keyUp на filterNameInput
 if (!keyUp) {
-    for (var cookie in cookieObj) {
-        createTR(cookie, cookieObj[cookie]);
-    }
+    createTRWithFilter(filterNameInput.value);
 }
 
 // здесь можно обработать нажатие на кнопку "добавить cookie"
@@ -73,13 +64,7 @@ addButton.addEventListener('click', () => {
     document.cookie = `${addNameInput.value}=${addValueInput.value}`;
     // addNameInput.value = '';
     // addValueInput.value = '';
-    cookieObj = document.cookie.split('; ').reduce((prev, current) => {
-        const [name, value] = current.split('=');
-
-        prev[name] = value;
-
-        return prev;
-    }, {});
+    cookieObj = getCookies();
     deleteNodes(listTable);
     createTRWithFilter(filterNameInput.value);
 });
@@ -95,20 +80,12 @@ function createTR(name, value) {
 
     deleteButton.textContent = 'удалить';
     deleteButton.addEventListener(('click'), () => {
-        listTable.removeChild(tr);
         var cookieDate = new Date();
 
         cookieDate.setTime(cookieDate.getTime() - 1);
         document.cookie = name += '=; expires= ' + cookieDate.toUTCString();
-        cookieObj = document.cookie.split('; ').reduce((prev, current) => {
-            const [name, value] = current.split('=');
-
-            prev[name] = value;
-
-            return prev;
-        }, {});
+        cookieObj = getCookies();
         deleteNodes(listTable);
-
         createTRWithFilter(filterNameInput.value);
     });
 
@@ -120,26 +97,42 @@ function createTR(name, value) {
     listTable.appendChild(fragment);
 }
 
-function createTRWithFilter(inputValue){
+function getCookies() {
+    return document.cookie
+        .split('; ')
+        .filter(Boolean)
+        .map(cookie => cookie.match(/^([^=]+)=(.+)/))
+        .reduce((obj, [, name, value]) => {
+            obj[name] = value;
+
+            return obj;
+        }, {});
+}
+
+function createTRWithFilter(inputValue) {
     if (inputValue !== '') {
         for (let cookieOne in cookieObj) {
-            let cookieLowName = cookieOne;
-            let cookieLowValue = cookieObj[cookieOne];
+            if (Object.prototype.hasOwnProperty.call(cookieObj, cookieOne)) {
+                let cookieLowName = cookieOne;
+                let cookieLowValue = cookieObj[cookieOne];
 
-            cookieLowName = cookieLowName.toLowerCase();
-            cookieLowValue = cookieLowValue.toLowerCase();
+                cookieLowName = cookieLowName.toLowerCase();
+                cookieLowValue = cookieLowValue.toLowerCase();
 
-            if (isMatching(cookieLowName, inputValue)) {
-                createTR(cookieOne, cookieObj[cookieOne]);
-            } else {
-                if (isMatching(cookieLowValue, inputValue)) {
+                if (isMatching(cookieLowName, inputValue)) {
                     createTR(cookieOne, cookieObj[cookieOne]);
+                } else {
+                    if (isMatching(cookieLowValue, inputValue)) {
+                        createTR(cookieOne, cookieObj[cookieOne]);
+                    }
                 }
             }
         }
     } else {
-        for (var cookie in cookieObj) {
-            createTR(cookie, cookieObj[cookie]);
+        for (var cookieOne in cookieObj) {
+            if (Object.prototype.hasOwnProperty.call(cookieObj, cookieOne)) {
+                createTR(cookieOne, cookieObj[cookieOne]);
+            }
         }
     }
 }
