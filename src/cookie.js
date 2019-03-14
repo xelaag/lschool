@@ -58,29 +58,7 @@ var cookieObj = document.cookie.split('; ').reduce((prev, current) => {
 filterNameInput.addEventListener('keyup', function () {
     keyUp = true;
     deleteNodes(listTable);
-    if (filterNameInput.value !== '') {
-        inputValue = filterNameInput.value;
-        for (let cookieOne in cookieObj) {
-            let cookieLowName = cookieOne;
-            let cookieLowValue = cookieObj[cookieOne];
-
-            cookieLowName = cookieLowName.toLowerCase();
-            cookieLowValue = cookieLowValue.toLowerCase();
-
-            if (isMatching(cookieLowName, inputValue)) {
-                createTR(cookieOne, cookieObj[cookieOne]);
-            } else {
-                if (isMatching(cookieLowValue, inputValue)) {
-                    createTR(cookieOne, cookieObj[cookieOne]);
-                }
-            }
-        }
-    } else {
-        for (var cookie in cookieObj) {
-            createTR(cookie, cookieObj[cookie]);
-        }
-    }
-
+    createTRWithFilter(filterNameInput.value);
 });
 
 // Если filterNameInput пуст и нет эвента keyUp на filterNameInput
@@ -93,8 +71,8 @@ if (!keyUp) {
 // здесь можно обработать нажатие на кнопку "добавить cookie"
 addButton.addEventListener('click', () => {
     document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-    addNameInput.value = '';
-    addValueInput.value = '';
+    // addNameInput.value = '';
+    // addValueInput.value = '';
     cookieObj = document.cookie.split('; ').reduce((prev, current) => {
         const [name, value] = current.split('=');
 
@@ -103,9 +81,7 @@ addButton.addEventListener('click', () => {
         return prev;
     }, {});
     deleteNodes(listTable);
-    for (var cookie in cookieObj) {
-        createTR(cookie, cookieObj[cookie]);
-    }
+    createTRWithFilter(filterNameInput.value);
 });
 
 function createTR(name, value) {
@@ -132,9 +108,8 @@ function createTR(name, value) {
             return prev;
         }, {});
         deleteNodes(listTable);
-        for (var cookie in cookieObj) {
-            createTR(cookie, cookieObj[cookie]);
-        }
+
+        createTRWithFilter(filterNameInput.value);
     });
 
     tr.appendChild(tdName);
@@ -143,6 +118,30 @@ function createTR(name, value) {
 
     fragment.appendChild(tr);
     listTable.appendChild(fragment);
+}
+
+function createTRWithFilter(inputValue){
+    if (inputValue !== '') {
+        for (let cookieOne in cookieObj) {
+            let cookieLowName = cookieOne;
+            let cookieLowValue = cookieObj[cookieOne];
+
+            cookieLowName = cookieLowName.toLowerCase();
+            cookieLowValue = cookieLowValue.toLowerCase();
+
+            if (isMatching(cookieLowName, inputValue)) {
+                createTR(cookieOne, cookieObj[cookieOne]);
+            } else {
+                if (isMatching(cookieLowValue, inputValue)) {
+                    createTR(cookieOne, cookieObj[cookieOne]);
+                }
+            }
+        }
+    } else {
+        for (var cookie in cookieObj) {
+            createTR(cookie, cookieObj[cookie]);
+        }
+    }
 }
 
 function isMatching(full, chunk) {
